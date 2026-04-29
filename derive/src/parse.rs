@@ -204,6 +204,25 @@ fn inject_fn(
 
     let name = item.sig.ident.clone();
 
+    let generics = item
+        .sig
+        .generics
+        .params
+        .iter()
+        .map(|p| match p {
+            GenericParam::Lifetime(lt) => lt.lifetime.ident.clone(),
+            GenericParam::Type(ty) => ty.ident.clone(),
+            GenericParam::Const(c) => c.ident.clone(),
+        })
+        .collect::<Vec<_>>();
+
+    let generics = if generics.is_empty() {
+        quote!()
+    } else {
+        quote!(::<#(#generics),*>)
+    };
+    // ------------------------
+
     let args = item.sig.inputs.iter().map(|a| {
         if let syn::FnArg::Typed(pat) = a {
             let pat = &pat.pat;
@@ -223,8 +242,8 @@ fn inject_fn(
         {
             use mockem::CallMock;
 
-            if  #name .mock_exists(core::marker::PhantomData::<#ret>) {
-                return #name .call_mock((#(#args,)*));
+            if #name #generics .mock_exists(core::marker::PhantomData::<#ret>) {
+                return #name #generics .call_mock((#(#args,)*));
             }
         }
     }))?
