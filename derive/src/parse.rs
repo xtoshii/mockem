@@ -100,7 +100,7 @@ fn inject_impl(input: ParseStream, attrs: Vec<Attribute>) -> Result<Item> {
 
             let mut stms = syn::parse2::<Block>(quote!({
                 {
-                    use mockem::CallMock;
+                    use mockem2::CallMock;
 
                     if #self_type :: #name #generics .mock_exists(core::marker::PhantomData::<#ret>) {
                         return #self_type :: #name #generics .call_mock((#(#args,)*));
@@ -171,7 +171,7 @@ fn inject_trait(
 
                 let mut stms = syn::parse2::<Block>(quote!({
                     {
-                        use mockem::CallMock;
+                        use mockem2::CallMock;
 
                         if <Self as #trait_name> :: #name #generics .mock_exists(core::marker::PhantomData::<#ret>) {
                             return <Self as #trait_name> :: #name #generics .call_mock((#(#args,)*));
@@ -240,7 +240,7 @@ fn inject_fn(
 
     let mut stms = syn::parse2::<Block>(quote!({
         {
-            use mockem::CallMock;
+            use mockem2::CallMock;
 
             if #name #generics .mock_exists(core::marker::PhantomData::<#ret>) {
                 return #name #generics .call_mock((#(#args,)*));

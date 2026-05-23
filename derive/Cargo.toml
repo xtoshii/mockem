@@ -1,6 +1,6 @@
 [package]
 name = "mockem2-derive"
-version = "0.2.2"
+version = "0.3.0"
 edition = "2021"
 authors = ["xtoshii <2548427264@qq.com>"]
 description = "derive for mockem"
