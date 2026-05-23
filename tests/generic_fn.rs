@@ -8,14 +8,14 @@ impl Number for i32 {
     }
 }
 
-#[cfg_attr(test, mockem::mock)]
+#[cfg_attr(test, mockem2::mock)]
 fn generic_fn<T: Number>(x: T) -> i32 {
     x.i32_value()
 }
 
 #[test]
 fn test_generic_fn() {
-    use mockem::MockCall;
+    use mockem2::MockCall;
 
     let i = 0;
     generic_fn.mock_once(|_: i32| 10);

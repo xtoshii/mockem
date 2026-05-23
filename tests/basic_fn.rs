@@ -1,4 +1,4 @@
-use mockem::{mock, ClearMocks, MockCall};
+use mockem2::{mock, ClearMocks, MockCall};
 
 #[mock]
 fn foo() -> String {

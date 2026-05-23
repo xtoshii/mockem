@@ -1,4 +1,4 @@
-use mockem::{mock, MockCall};
+use mockem2::{mock, MockCall};
 
 #[mock]
 async fn foo() -> String {
