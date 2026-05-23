@@ -1,13 +1,13 @@
 [package]
-name = "mockem-derive"
-version = "0.2.1"
+name = "mockem2-derive"
+version = "0.2.2"
 edition = "2021"
-authors = ["Jack Lee <jack.y.l.dev@gmail.com>"]
+authors = ["xtoshii <2548427264@qq.com>"]
 description = "derive for mockem"
 categories = ["development-tools::testing"]
 keywords = ["testing", "mock", "mocking", "derive"]
-documentation = "https://docs.rs/mockem"
-repository = "https://github.com/poonesnerfect/mockem"
+documentation = "https://docs.rs/mockem2"
+repository = "https://github.com/xtoshii/mockem"
 license = "MIT OR Apache-2.0"
 rust-version = "1.56"
 
