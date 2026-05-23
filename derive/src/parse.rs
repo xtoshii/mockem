@@ -100,7 +100,7 @@ fn inject_impl(input: ParseStream, attrs: Vec<Attribute>) -> Result<Item> {
 
             let mut stms = syn::parse2::<Block>(quote!({
                 {
-                    use mockem::CallMock;
+                    use mockem2::CallMock;
 
                     if #self_type :: #name #generics .mock_exists(core::marker::PhantomData::<#ret>) {
                         return #self_type :: #name #generics .call_mock((#(#args,)*));
@@ -171,7 +171,7 @@ fn inject_trait(
 
                 let mut stms = syn::parse2::<Block>(quote!({
                     {
-                        use mockem::CallMock;
+                        use mockem2::CallMock;
 
                         if <Self as #trait_name> :: #name #generics .mock_exists(core::marker::PhantomData::<#ret>) {
                             return <Self as #trait_name> :: #name #generics .call_mock((#(#args,)*));
@@ -204,6 +204,25 @@ fn inject_fn(
 
     let name = item.sig.ident.clone();
 
+    let generics = item
+        .sig
+        .generics
+        .params
+        .iter()
+        .map(|p| match p {
+            GenericParam::Lifetime(lt) => lt.lifetime.ident.clone(),
+            GenericParam::Type(ty) => ty.ident.clone(),
+            GenericParam::Const(c) => c.ident.clone(),
+        })
+        .collect::<Vec<_>>();
+
+    let generics = if generics.is_empty() {
+        quote!()
+    } else {
+        quote!(::<#(#generics),*>)
+    };
+    // ------------------------
+
     let args = item.sig.inputs.iter().map(|a| {
         if let syn::FnArg::Typed(pat) = a {
             let pat = &pat.pat;
@@ -221,10 +240,10 @@ fn inject_fn(
 
     let mut stms = syn::parse2::<Block>(quote!({
         {
-            use mockem::CallMock;
+            use mockem2::CallMock;
 
-            if  #name .mock_exists(core::marker::PhantomData::<#ret>) {
-                return #name .call_mock((#(#args,)*));
+            if #name #generics .mock_exists(core::marker::PhantomData::<#ret>) {
+                return #name #generics .call_mock((#(#args,)*));
             }
         }
     }))?

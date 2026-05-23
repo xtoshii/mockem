@@ -170,7 +170,7 @@ use std::{
 mod store;
 use store::MockStore;
 
-pub use mockem_derive::mock;
+pub use mockem2_derive::mock;
 
 thread_local! {
     static MOCK_STORE: MockStore = MockStore::default()

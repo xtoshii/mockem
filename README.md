@@ -4,6 +4,12 @@
 [<img alt="crates.io" src="https://img.shields.io/crates/v/mockem.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/mockem)
 [<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-mockem-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/mockem)
 
+src crate: mockem: https://crates.io/crates/mockem
+
+src repo: https://github.com/PoOnesNerfect/mockem
+
+I add generic functions support and updated the crate.
+
 Mock any function in Rust.
 
 Make sure to only use this crate for testing purposes, as it will add a lot of overhead to your code.
@@ -159,5 +165,36 @@ fn test_fn() {
     
     assert_eq!(&bar().await, "Hello, mockem and mockem2!");
 }
+```
+## Generic Functions
+```
+trait Number{
+    fn i32_value(&self) -> i32;
+}
+
+impl Number for i32{
+    fn i32_value(&self) -> i32{
+        self.clone()
+    }
+}
+
+
+#[cfg_attr(test, mockem::mock)]
+fn generic_fn<T: Number>(x: T) -> i32{
+    x.i32_value()
+}
+
+#[test]
+fn test_generic_fn(){
+    use mockem::MockCall;
+
+    let i = 0;
+    generic_fn.mock_once(|_ : i32| {
+        10
+    });
+    let val = generic_fn(i);
+    assert_eq!(val, 10);
+}
+
 ```
 
